@@ -2,34 +2,41 @@ import java.util.Arrays;
 
 class Solution {
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
-        // Get the sizes of both input arrays.
-        int n = nums1.length;
-        int m = nums2.length;
-
-        // Merge the arrays into a single sorted array.
-        int[] merged = new int[n + m];
-        int k = 0;
-        for (int i = 0; i < n; i++) {
-            merged[k++] = nums1[i];
+        int i=0,j=0,k=0,flen=nums1.length,slen=nums2.length;
+        int a[]=new int[flen+slen];
+        while(i<flen && j<slen){
+            if(nums1[i]>nums2[j]){
+                a[k]=nums2[j];
+                k++;
+                j++;
+            }
+            else{
+                a[k]=nums1[i];
+                k++;
+                i++;
+            }
         }
-        for (int i = 0; i < m; i++) {
-            merged[k++] = nums2[i];
+        while(i<flen){
+            a[k]=nums1[i];
+            k++;
+            i++;
         }
-
-        // Sort the merged array.
-        Arrays.sort(merged);
-
-        // Calculate the total number of elements in the merged array.
-        int total = merged.length;
-
-        if (total % 2 == 1) {
-            // If the total number of elements is odd, return the middle element as the median.
-            return (double) merged[total / 2];
-        } else {
-            // If the total number of elements is even, calculate the average of the two middle elements as the median.
-            int middle1 = merged[total / 2 - 1];
-            int middle2 = merged[total / 2];
-            return ((double) middle1 + (double) middle2) / 2.0;
+        while(j<slen){
+            a[k]=nums2[j];
+            k++;
+            j++;
+        }
+        if((k)%2==0){
+            int t=(a[(k/2)-1]+a[k/2]);
+            if(t%2==0){
+                return t/2;
+            }
+            else{
+                return (t/2)+0.5;
+            }
+        }
+        else{
+            return a[k/2];
         }
     }
 }
